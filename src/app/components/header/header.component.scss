@@ -1,0 +1,34 @@
+.header-container {
+  display: grid;
+  grid-template-columns: 1fr 2fr 2fr;
+  align-items: center;
+  background-color: #19ba02;
+  color : #ffffff;
+  font-weight: 700;
+  font-size: 32px;
+  width: 100%;
+  height: 64px;
+  padding: 1rem;
+}
+
+button {
+    height: 48px;
+    width: 48px;
+    background-color: transparent;
+    cursor: pointer;
+    border: none;
+    color: #ffffff;
+    margin: 0 1rem;
+
+    
+
+    &:hover {
+        background-color: #20d906;
+        border-radius: 32px;
+        transition: background-color 0.25s, border-radius 0.25s;
+    }
+}
+
+.notification-button {
+    margin-left: 3rem;
+}

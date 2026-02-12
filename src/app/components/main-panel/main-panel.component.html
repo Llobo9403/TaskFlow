@@ -1,0 +1,16 @@
+<div class="main-panel">
+    @switch (page$ | async) {
+        @case (Pages.DASHBOARD) {
+            <app-dashboard></app-dashboard>
+        }
+        @case (Pages.BALANCE) {
+            <app-balance></app-balance>
+        }
+        @case (Pages.CREDIT) {
+            <app-credit></app-credit>
+        }
+        @case (Pages.TRANSFER) {
+            <app-transfer></app-transfer>
+        }
+    }
+</div>
