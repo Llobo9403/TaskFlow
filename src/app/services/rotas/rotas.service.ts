@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, distinctUntilChanged, Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { Pages } from '../../constants/pages.enum';
 
 @Injectable({

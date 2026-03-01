@@ -1,6 +1,6 @@
 export enum Pages {
     DASHBOARD = 'Dashboard',
     TRANSFER = 'Transações',
-    BALANCE = 'Extrato',
+    EXTRACT = 'Extrato',
     CREDIT = 'Crédito'
 }

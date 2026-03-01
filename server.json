@@ -1,0 +1,56 @@
+{
+    "account": {
+        "username": "CaixaVerso",
+        "balance": 1650.50,
+        "accountNumber": 1234567890,
+        "agency": 1234,
+        "activeDebt": 0,
+        "employmentType": "CLT",
+        "hasDelinquency": false
+    },
+    "movement": [
+        {
+            "type": "deposit",
+            "amount": 5000,
+            "date": "2026-01-01"
+        },
+        {
+            "type": "withdrawal",
+            "amount": 1500,
+            "date": "2026-01-05"
+        },
+        {
+            "type": "debit",
+            "amount": 2000,
+            "date": "2025-01-10"
+        },
+        {
+            "type": "transfer",
+            "amount": 320.50,
+            "date": "2026-02-10"
+        },
+        {
+            "type": "deposit",
+            "amount": 500,
+            "date": "2026-02-15"
+        }
+    ],
+    "simulations": [
+        {
+            "type": "PRICE",
+            "amount": 1000,
+            "time": 12,
+            "rate": 5,
+            "parcelValue": 85.61,
+            "date": "2026-03-01"
+        },
+        {
+            "type": "SAC",
+            "amount": 2000,
+            "time": 12,
+            "rate": 5,
+            "parcelValue": 85.61,
+            "date": "2026-03-05"
+        }
+    ]
+}

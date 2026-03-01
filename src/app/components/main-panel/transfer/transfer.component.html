@@ -1,1 +1,51 @@
-<h1>Transferência</h1>
+<h1>Transações</h1>
+
+<div class="info-row">
+  <mat-card class="example-card" appearance="outlined">
+    <mat-card-header>
+      <mat-card-title-group>
+        <mat-card-title>Saldo em Conta</mat-card-title>
+      </mat-card-title-group>
+    </mat-card-header>
+    <mat-card-content>
+      {{formatBRL(balanceValue)}}
+    </mat-card-content>
+  </mat-card>
+</div>
+
+
+<div class="info-row">
+    <mat-card class="example-card" appearance="outlined">
+      <mat-card-header>
+        <mat-card-title-group>
+          <mat-card-title>Saldo em Conta</mat-card-title>
+        </mat-card-title-group>
+      </mat-card-header>
+      <mat-card-content class="valor" style="
+      padding-top: 16px;">
+        {{formatBRL(balanceValue)}}
+      </mat-card-content>
+    </mat-card>
+    <mat-card class="example-card" appearance="outlined">
+      <mat-card-header>
+        <mat-card-title-group>
+          <mat-card-title>Receita</mat-card-title>
+          <mat-card-subtitle>Últimos 30 dias:</mat-card-subtitle>
+        </mat-card-title-group>
+      </mat-card-header>
+      <mat-card-content class="valor receita">
+        {{formatBRL(income)}}
+      </mat-card-content>
+    </mat-card>
+    <mat-card class="example-card" appearance="outlined">
+      <mat-card-header>
+        <mat-card-title-group>
+          <mat-card-title>Despesas</mat-card-title>
+          <mat-card-subtitle>Últimos 30 dias:</mat-card-subtitle>
+        </mat-card-title-group>
+      </mat-card-header>
+      <mat-card-content class="valor despesa">
+       - {{formatBRL(expense)}}
+      </mat-card-content>
+    </mat-card>
+</div>
