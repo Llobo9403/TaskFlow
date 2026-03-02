@@ -2,7 +2,7 @@
 
 <h2>Simulações de Crédito</h2>
 
-<p>Limite disponível: {{maxAllowedAmount | currency:'BRL':'symbol':'1.2-2':'pt-BR'}}</p>
+<p>Limite disponível: {{maxLoanAmount | currency:'BRL':'symbol':'1.2-2':'pt-BR'}}</p>
 <div class="form-wrap" [formGroup]="form">
     <mat-form-field class="span-2">
       <mat-label>Tipo de Simulação</mat-label>
@@ -22,7 +22,7 @@
             (input)="limitDecimal($event)"/>
       <mat-error *ngIf="form.get('amount')?.hasError('required')">Obrigatório</mat-error>
       <mat-error *ngIf="form.get('amount')?.hasError('min')">Mínimo R$ 100</mat-error>
-      <mat-error *ngIf="form.get('amount')?.hasError('max')">Limite disponível: {{maxAllowedAmount | currency:'BRL':'symbol':'1.2-2':'pt-BR'}}</mat-error>
+      <mat-error *ngIf="form.get('amount')?.hasError('max')">Limite disponível: {{maxLoanAmount | currency:'BRL':'symbol':'1.2-2':'pt-BR'}}</mat-error>
     </mat-form-field>
 
     <mat-form-field appearance="outline"  class="span-2">
@@ -44,37 +44,43 @@
 <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 tabela"> 
     <ng-container matColumnDef="Data">
       <th mat-header-cell *matHeaderCellDef class="valor"> Data </th>
-      <td mat-cell *matCellDef="let element"> {{element.date | date: 'dd/MM/yyyy'}} </td>
+      <td mat-cell *matCellDef="let element"> {{element.createdAt | date: 'dd/MM/yyyy'}} </td>
     </ng-container> 
     <ng-container matColumnDef="Tipo">
       <th mat-header-cell *matHeaderCellDef class="valor"> Tipo </th>
-      <td mat-cell *matCellDef="let element"> {{element.type}} </td>
+      <td mat-cell *matCellDef="let element"> {{element.projectionType}} </td>
     </ng-container> 
     <ng-container matColumnDef="Montante">
         <th mat-header-cell *matHeaderCellDef class="valor"> Montante </th>
-        <td mat-cell *matCellDef="let element">{{element.amount | currency:'BRL':'symbol':'1.2-2':'pt-BR'}}</td>
+        <td mat-cell *matCellDef="let element">{{element.requestedAmount | currency:'BRL':'symbol':'1.2-2':'pt-BR'}}</td>
     </ng-container> 
     <ng-container matColumnDef="Tempo">
       <th mat-header-cell *matHeaderCellDef class="valor"> Tempo </th>
-      <td mat-cell *matCellDef="let element">{{element.time}} meses</td>
+      <td mat-cell *matCellDef="let element">{{element.requestedMonths}} meses</td>
     </ng-container> 
     <ng-container matColumnDef="Taxa">
-      <th mat-header-cell *matHeaderCellDef class="valor"> Taxa  (%a.a.)</th>
-      <td mat-cell *matCellDef="let element">{{element.rate}}%</td>
+      <th mat-header-cell *matHeaderCellDef class="valor"> Taxa  (%a.m.)</th>
+      <td mat-cell *matCellDef="let element">{{element.monthlyRate * 100 | number:'1.2-2'}}%</td>
     </ng-container> 
     <ng-container matColumnDef="ValorParcela">
-      <th mat-header-cell *matHeaderCellDef class="valor"> Valor </th>
-      <td mat-cell *matCellDef="let element">{{element.parcelValue | currency:'BRL':'symbol':'1.2-2':'pt-BR' }}</td>
+      <th mat-header-cell *matHeaderCellDef class="valor"> 1a Parc./Parc. Fixa </th>
+      <td mat-cell *matCellDef="let element">{{element.installmentFirst || element.installmentFixed | currency:'BRL':'symbol':'1.2-2':'pt-BR' }}</td>
     </ng-container>
     <ng-container matColumnDef="Acoes">
       <th mat-header-cell *matHeaderCellDef class="valor"> Ações </th>
       <td mat-cell *matCellDef="let element">
-          <button class="btn-acoes" mat-icon-button>
+          <button class="btn-acoes" mat-icon-button [matMenuTriggerFor]="menu" [matMenuTriggerData]="{element: element}">
           <mat-icon>more_vert</mat-icon>
         </button>
       </td>
     </ng-container>
 
+    <mat-menu #menu="matMenu">
+      <ng-template matMenuContent let-data="element">
+        <button mat-menu-item>Editar</button>
+        <button mat-menu-item (click)="excluirRegistro(data)">Excluir</button>
+      </ng-template>
+    </mat-menu>
   <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
   <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 </table>

@@ -1,18 +1,22 @@
 import { Component, OnInit } from '@angular/core';
 import { BankService } from '../../../services/bank/bank.service';
-import { CreditSimulationModel, Movement } from '../../../shared/models/movement-model/movement-model.model';
+import { ProjectionType, Simulation, SimulationCreate } from '../../../shared/models/movement-model/movement-model.model';
 import { MatTableModule } from '@angular/material/table';
-import { CurrencyPipe, DatePipe, formatDate, NgFor, NgIf } from '@angular/common';
+import { CurrencyPipe, DatePipe, DecimalPipe, formatDate, NgIf } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import {FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
 import {MatInputModule} from '@angular/material/input';
 import {MatSelectModule} from '@angular/material/select';
 import {MatFormFieldModule} from '@angular/material/form-field';
-import { CreditProcessorService } from '../../../services/credit-processor/credit-processor.service';
+import { CreditProcessorService, Limits } from '../../../services/credit-processor/credit-processor.service';
+import { AmortizationService } from '../../../services/amortization/amortization.service';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { SimulationDialogComponent } from './simulationDialog/simulation-dialog.component';
+import { MatMenuModule } from '@angular/material/menu';
 
 @Component({
   selector: 'app-credit',
-  imports: [MatTableModule, DatePipe, MatIconModule, CurrencyPipe, MatInputModule, MatSelectModule, MatFormFieldModule, FormsModule, ReactiveFormsModule, NgIf, NgFor],
+  imports: [MatTableModule, DatePipe, MatIconModule, CurrencyPipe, MatInputModule, MatSelectModule, MatFormFieldModule, FormsModule, ReactiveFormsModule, NgIf, MatDialogModule, DecimalPipe, MatMenuModule],
   standalone: true,
   templateUrl: './credit.component.html',
   styleUrl: './credit.component.scss'
@@ -21,17 +25,19 @@ export class CreditComponent implements OnInit{
 
   form!: FormGroup;
   displayedColumns: string[] = ['Data', 'Tipo', 'Montante', 'Tempo', 'Taxa', 'ValorParcela', "Acoes"];
-  dataSource: CreditSimulationModel[] = [];
+  dataSource: Simulation[] = [];
   tipos = [
     {value: 'SAC', viewValue: 'SAC'},
     {value: 'PRICE', viewValue: 'PRICE'}      
   ];
   prazoMaximo! : number;
-  maxAllowedAmount! : number;
+  maxLoanAmount : number = 0;
 
   constructor(
     private bankService: BankService,
     private creditProcessor: CreditProcessorService,
+    private amortization: AmortizationService,
+    private dialog: MatDialog,
     private fb: FormBuilder
   ) {
     this.form = this.fb.group({
@@ -51,23 +57,39 @@ export class CreditComponent implements OnInit{
   }
 
   setLimits() {
-    this.creditProcessor.getAverageIncome().subscribe((limits) => {
+   this.creditProcessor.getAverageIncome().subscribe({
+    next: (limits) => {
       this.prazoMaximo = limits.maxTime;
-      this.maxAllowedAmount = limits.maxLoanAmount;
+      this.maxLoanAmount = limits.maxLoanAmount;
 
-      this.form.get('amount')?.setValidators([Validators.required, Validators.min(100), Validators.pattern(/^\d+([.,]\d{1,2})?$/), Validators.max(this.maxAllowedAmount)]);
-      this.form.get('time')?.setValidators([Validators.required, Validators.min(1), Validators.max(this.prazoMaximo), Validators.pattern(/^\d+$/)]);
+      const amountCtrl = this.form.get('amount');
+      amountCtrl?.setValidators([
+        Validators.required,
+        Validators.min(100),
+        Validators.max(limits.maxLoanAmount),
+        Validators.pattern(/^\d+([.,]\d{1,2})?$/)
+      ]);
+      amountCtrl?.updateValueAndValidity();
 
-      console.log('Limite de prazo:', this.prazoMaximo);
-      console.log('Limite de valor:', this.maxAllowedAmount);
+      const timeCtrl = this.form.get('time');
+      timeCtrl?.setValidators([
+        Validators.required,
+        Validators.min(1),
+        Validators.max(limits.maxTime),
+        Validators.pattern(/^\d+$/)
+      ]);
+      timeCtrl?.updateValueAndValidity();
+
+      console.log('Limites atualizados:', limits);
+    },
+    error: (err) => console.error('Erro ao obter limites:', err)
     });
   }
 
   popularTabela(){
-      this.bankService.getSimulations().subscribe((response: CreditSimulationModel[]) => {
-        this.dataSource = response
-        console.log(this.dataSource)
-    })
+    this.bankService.getSimulations().subscribe((response: Simulation[]) => {
+      this.dataSource = response;
+    });
   }
 
   setDate() {
@@ -77,17 +99,6 @@ export class CreditComponent implements OnInit{
     const day = String(today.getDate()).padStart(2, '0');
     const formattedDate = `${year}-${month}-${day}`;
     return this.form.get('date')?.setValue(formattedDate);
-  }
-
-  createSimulation() {
-      if (this.form.valid) {
-        const simulation: CreditSimulationModel = this.form.value;
-        this.dataSource.push(simulation);
-        this.form.reset();
-        this.setDate();
-      } else {
-        console.log('Formulário inválido');
-      }
   }
 
   limitDecimal(event: Event): void {
@@ -105,18 +116,106 @@ export class CreditComponent implements OnInit{
   }
 
   generateSimulation() {
-   
+    if (this.form.invalid) return;
+
+    const type = this.form.value.type; // PRICE ou SAC
+    const amount = Number(this.form.value.amount);
+    const time = Number(this.form.value.time);
+
+    this.creditProcessor.getAverageIncome().subscribe((limits) => {
+      const rate = limits.monthlyRate;
+
+      let parcelValue = 0;
+      if (type === 'PRICE') {
+        const price = this.amortization.calculatePrice(amount, rate, time);
+        parcelValue = price.installment;
+      } else {
+        const sac = this.amortization.calculateSAC(amount, rate, time);
+        parcelValue = sac.schedule[0]?.installment ?? 0;
+      }
+
+      const simulation: SimulationCreate = {
+        projectionType: type,
+        requestedAmount: amount,
+        requestedMonths: time,
+        averageIncome: limits.averageIncome,
+        maxAllowedMonths: limits.maxTime,
+        maxParcelValue: limits.maxParcelValue,
+        maxAllowedAmount: limits.maxLoanAmount,
+        monthlyRate: limits.monthlyRate,
+        installmentFirst: type === 'SAC' ? parcelValue : undefined,
+        installmentFixed: type === 'PRICE' ? parcelValue : undefined,
+        totalPaid: parcelValue * time,
+        totalInterest: (parcelValue * time) - amount
+
+      };
+
+      this.creditProcessor.createSimulation(simulation).subscribe({
+        next: (response) => {
+          this.dataSource = [response, ...this.dataSource];
+
+          this.openSimulationDialog({
+            simulation: response,
+            limits: limits
+          });
+        },
+        error: (err) => console.error('Erro ao salvar simulação:', err)
+      });
+    });
   }
 
-  buildPayload(): CreditSimulationModel {
-    const formValue = this.form.value;
-    return {
-      date: formatDate(formValue.date, 'yyyy-MM-dd', 'pt-BR'),
-      type: formValue.type,
-      amount: Number(formValue.amount.toString().replace(',', '.')),
-      time: Number(formValue.time),
-      rate: Number(formValue.rate),
-      parcelValue: Number(formValue.parcelValue)
+  createSimulation() {
+    if (this.form.valid) {
+      const simulation: Simulation = this.form.value;
+      this.dataSource.push(simulation);
+      this.form.reset();
+      this.setDate();
+    } else {
+      console.log('Formulário inválido');
+    }
+  }
+
+  buildPayload(limits: Limits,
+  type: ProjectionType,
+  amount: number,
+  time: number,
+  parcelValue: number): SimulationCreate {
+   return {
+      projectionType: type,
+      requestedAmount: amount,
+      requestedMonths: time,
+      averageIncome: limits.averageIncome,
+      maxAllowedMonths: limits.maxTime,
+      maxParcelValue: limits.maxParcelValue,
+      maxAllowedAmount: limits.maxLoanAmount,
+      monthlyRate: limits.monthlyRate,
+      installmentFirst: type === 'SAC' ? parcelValue : undefined,
+      installmentFixed: type === 'PRICE' ? parcelValue : undefined,
+      totalPaid: parcelValue * time,
+      totalInterest: (parcelValue * time) - amount
     };
+  }
+
+  openSimulationDialog(data: { simulation: Simulation, limits: Limits }) {
+    this.dialog.open(SimulationDialogComponent, {
+      width: '600px',
+      disableClose: true,
+      data: {
+        ...data.simulation,
+        ...data.limits
+      }
+    });
+  }
+
+  excluirRegistro(element: Simulation) {
+     if (!element?.id) return;
+
+  this.creditProcessor.deleteSimulation(element.id).subscribe({
+    next: () => {
+      this.dataSource = this.dataSource.filter(s => s.id !== element.id);
+      console.log('Simulação excluída com sucesso');
+    },
+    error: (err) => console.error('Erro ao excluir simulação:', err)
+  });
   }
 }

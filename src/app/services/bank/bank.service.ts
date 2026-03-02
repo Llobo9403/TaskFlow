@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
-import { CreditSimulationModel, Movement } from '../../shared/models/movement-model/movement-model.model';
+import { CreditSimulationModel, Movement, Simulation } from '../../shared/models/movement-model/movement-model.model';
 
 @Injectable({
   providedIn: 'root'
@@ -22,8 +22,8 @@ export class BankService {
     .get<Movement[]>(`${this.apiUrl}/movement`)
   }
 
-  getSimulations(): Observable<CreditSimulationModel[]>{
-    return this.http.get<CreditSimulationModel[]>(`${this.apiUrl}/simulations`)
+  getSimulations(): Observable<Simulation[]>{
+    return this.http.get<Simulation[]>(`${this.apiUrl}/simulations`)
   } 
 
   receiveMoney(amount: number, total: number) {
