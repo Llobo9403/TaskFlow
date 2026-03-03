@@ -1,7 +1,37 @@
-.main-panel {
-    margin: 16px;
-    border: 1px solid #757575;
-    border-radius: 8px;
-    height: 1vh;
-    background-color: #f9f9f9;
+.btn-acoes {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    margin: 8px 8px 8px 0;
+}
+
+h2 {
+    margin: 16px 0;
+}
+p {
+    font-weight: 400;
+}
+
+.form-wrap {
+    margin: 16px 0;
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 16px;
+    margin-bottom: 16px;
+    width: 100%;
+    
+    .span-1 {
+        grid-column: span 1;
+    }
+
+    .span-2 {
+        grid-column: span 2;
+    }
+
+
+    button {
+      flex: 0 0 auto;
+      height: 56px;
+      white-space: nowrap;
+    }
 }

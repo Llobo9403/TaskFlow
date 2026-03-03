@@ -2,6 +2,36 @@
 *{
     margin: 0;
     padding: 0;
+    font-family: 'Inter', sans-serif ;
 }
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+html, body {
+  font-family: 'Inter', sans-serif !important;
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+body, p, span, div, a, li,
+h1, h2, h3, h4, h5, h6,
+button, input, textarea, select, label, mat-card-title, mat-card-subtitle {
+  font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+}
+
+.mat-mdc-card-title,
+.mat-mdc-card-subtitle,
+.mat-mdc-card-content,
+.mat-mdc-card-header,
+.mat-mdc-dialog-title,
+.mat-mdc-dialog-content,
+.mat-mdc-dialog-actions
+.mat-mdc-card {
+  font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif !important;
+}
+
+mat-icon,
+.material-icons,
+.material-symbols-outlined,
+.material-symbols-rounded,
+.material-symbols-sharp {
+  font-family: 'Material Icons' !important;
+}

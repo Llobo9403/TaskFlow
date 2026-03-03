@@ -1,0 +1,141 @@
+{
+  "account": {
+    "username": "CaixaVerso",
+    "balance": 1250.5,
+    "accountNumber": 1234567890,
+    "agency": 1234,
+    "activeDebt": 0,
+    "employmentType": "CLT",
+    "hasDelinquency": false
+  },
+  "movement": [
+    {
+      "type": "deposit",
+      "amount": 5000,
+      "date": "2026-01-01",
+      "description": "Salário",
+      "id": "bcd3"
+    },
+    {
+      "type": "transfer",
+      "amount": 1500,
+      "date": "2026-01-05",
+      "description": "Compra de Mercado",
+      "id": "aac4"
+    },
+    {
+      "type": "transfer",
+      "amount": 2000,
+      "date": "2025-01-10",
+      "description": "Transferencia Pix",
+      "id": "baa1"
+    },
+    {
+      "type": "transfer",
+      "amount": 320.5,
+      "date": "2026-02-10",
+      "description": "Transferência para Conta",
+      "id": "9b2e"
+    },
+    {
+      "type": "deposit",
+      "amount": 500,
+      "date": "2026-02-15",
+      "description": "Presente de aniversário",
+      "id": "8506"
+    },
+    {
+      "type": "deposit",
+      "amount": 5000,
+      "date": "2026-02-15",
+      "description": "Salário",
+      "id": "8506"
+    },
+    {
+      "id": "d792",
+      "type": "withdrawal",
+      "amount": 100,
+      "date": "2026-03-03T05:08:07.441Z"
+    }
+  ],
+  "simulations": [
+    {
+      "id": "1",
+      "createdAt": "2026-03-01",
+      "status": "PENDING",
+      "projectionType": "PRICE",
+      "requestedAmount": 1000,
+      "requestedMonths": 12,
+      "averageIncome": 1833.33,
+      "maxAllowedMonths": 24,
+      "maxParcelValue": 550,
+      "maxAllowedAmount": 13200,
+      "monthlyRate": 0.02,
+      "installmentFixed": 85.61,
+      "totalPaid": 1027.32,
+      "totalInterest": 27.32
+    },
+    {
+      "id": "d4e5",
+      "createdAt": "2026-03-02",
+      "status": "PENDING",
+      "projectionType": "SAC",
+      "requestedAmount": 2000,
+      "requestedMonths": 12,
+      "averageIncome": 1833.3333333333333,
+      "maxAllowedMonths": 24,
+      "maxParcelValue": 366.67,
+      "maxAllowedAmount": 8800.08,
+      "monthlyRate": 0.02,
+      "installmentFirst": 206.66666666666666,
+      "totalPaid": 2480,
+      "totalInterest": 480
+    },
+    {
+      "id": "a8b9",
+      "createdAt": "2026-03-02",
+      "projectionType": "SAC",
+      "requestedAmount": 25000,
+      "requestedMonths": 12,
+      "averageIncome": 3500,
+      "maxAllowedMonths": 36,
+      "maxParcelValue": 700,
+      "maxAllowedAmount": 25200,
+      "monthlyRate": 0.02,
+      "installmentFirst": 2583.3333333333335,
+      "totalPaid": 31000,
+      "totalInterest": 6000
+    },
+    {
+      "id": "76d7",
+      "createdAt": "2026-03-02",
+      "projectionType": "PRICE",
+      "requestedAmount": 25000,
+      "requestedMonths": 12,
+      "averageIncome": 3500,
+      "maxAllowedMonths": 36,
+      "maxParcelValue": 700,
+      "maxAllowedAmount": 25200,
+      "monthlyRate": 0.02,
+      "installmentFixed": 2363.9899155737858,
+      "totalPaid": 28367.87898688543,
+      "totalInterest": 3367.878986885429
+    },
+    {
+      "id": "40a5",
+      "createdAt": "2026-03-03",
+      "projectionType": "SAC",
+      "requestedAmount": 2300,
+      "requestedMonths": 36,
+      "averageIncome": 3500,
+      "maxAllowedMonths": 36,
+      "maxParcelValue": 700,
+      "maxAllowedAmount": 25200,
+      "monthlyRate": 0.02,
+      "installmentFirst": 109.88888888888889,
+      "totalPaid": 3956,
+      "totalInterest": 1656
+    }
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
+}

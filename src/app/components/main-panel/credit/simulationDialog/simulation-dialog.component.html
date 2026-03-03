@@ -1,0 +1,41 @@
+<h2 mat-dialog-title>Simulação gerada</h2>
+
+<div mat-dialog-content>
+  <p><strong>ID:</strong> {{ data.id }}</p>
+  <p><strong>Data:</strong> {{ data.createdAt | date:'dd/MM/yyyy' }}</p>
+
+  <mat-divider class="my-2"></mat-divider>
+
+  <h3>Entrada do usuário</h3>
+  <p><strong>Tipo:</strong> {{ data.projectionType }}</p>
+  <p><strong>Valor solicitado:</strong> {{ data.requestedAmount | currency:'BRL' }}</p>
+  <p><strong>Prazo solicitado:</strong> {{ data.requestedMonths }} meses</p>
+
+  <mat-divider class="my-2"></mat-divider>
+
+  <h3>Regras / limites calculados</h3>
+  <p><strong>Renda média:</strong> {{ data.averageIncome | currency:'BRL' }}</p>
+  <p><strong>Prazo máximo:</strong> {{ data.maxAllowedMonths }} meses</p>
+  <p><strong>Parcela máxima:</strong> {{ data.maxParcelValue | currency:'BRL' }}</p>
+  <p><strong>Limite máximo:</strong> {{ data.maxAllowedAmount | currency:'BRL' }}</p>
+  <p><strong>Taxa:</strong> {{ (data.monthlyRate * 100) | number:'1.2-2' }}% a.m.</p>
+
+  <mat-divider class="my-2"></mat-divider>
+
+  <h3>Resultado da projeção ({{ data.projectionType }})</h3>
+  <ng-container *ngIf="data.projectionType === 'PRICE'; else sacBlock">
+    <p><strong>Parcela fixa:</strong> {{ data.installmentFixed | currency:'BRL' }}</p>
+  </ng-container>
+
+  <ng-template #sacBlock>
+    <p><strong>1ª parcela:</strong> {{ data.installmentFirst | currency:'BRL' }}</p>
+  </ng-template>
+
+  <p><strong>Total de juros:</strong> {{ data.totalInterest | currency:'BRL' }}</p>
+  <p><strong>Total pago:</strong> {{ data.totalPaid | currency:'BRL' }}</p>
+</div>
+
+<div mat-dialog-actions align="end">
+  <button mat-button (click)="continue()">Continuar</button>
+  <button mat-flat-button color="primary" (click)="accept()">Aceitar a proposta</button>
+</div>

@@ -1,7 +1,35 @@
-.main-panel {
-    margin: 16px;
-    border: 1px solid #757575;
-    border-radius: 8px;
-    height: 1vh;
-    background-color: #f9f9f9;
+.info-row {
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-bottom: 32px;
+    .valor {
+        font-size: 1.5rem;
+        font-weight: 600;
+    }
+
+    .receita, .valor-positivo{
+        color: #2e7d32; /* Verde para receitas */
+    }
+
+    .despesa, .valor-negativo{
+        color: #c62828; /* Vermelho para despesas */
+    }
+}
+
+.tabela {
+    width: 100%;
+    margin-top: 2rem;
+    .valor {
+        font-size: 1.2rem;
+        font-weight: 500;
+    }
+    .valor-negativo{
+        color: #c62828; /* Vermelho para despesas */
+    }
+    .valor-positivo{
+        color: #2e7d32; /* Verde para receitas */
+    }
 }

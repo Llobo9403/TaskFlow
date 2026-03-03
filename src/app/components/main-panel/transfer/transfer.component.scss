@@ -1,7 +1,10 @@
-.main-panel {
-    margin: 16px;
-    border: 1px solid #757575;
-    border-radius: 8px;
-    height: 1vh;
-    background-color: #f9f9f9;
+.info-row {
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-bottom: 32px;
+    font-size: large;
 }
+

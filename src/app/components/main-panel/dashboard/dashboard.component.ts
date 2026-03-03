@@ -1,38 +1,87 @@
-import { Component } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatTableModule } from '@angular/material/table';
+import { BankService } from '../../../services/bank/bank.service';
+import { HttpClient } from '@angular/common/http';
+import { FormsModule } from '@angular/forms';
+import { TransactionTypePipeTsPipe } from "../../../shared/pipes/transaction-type/transaction-type.pipe.ts.pipe";
+import { BrlFormatPipe } from '../../../shared/pipes/brl/brl-format.pipe';
+import { Movement } from '../../../shared/models/movement-model/movement-model.model';
+import { CurrencyPipe, DatePipe } from '@angular/common';
 
 
-export interface PeriodicElement {
-  Data: string;
-  Descricao: string;
-  Valor: number;
+const map: Record<string, string> = {
+  'deposit': 'Depósito',
+  'withdrawal': 'Saque',
+  'transfer': 'Transferência',
+  'credit': 'Crédito',
+  'debit': 'Débito'
 }
-
-const ELEMENT_DATA: PeriodicElement[] = [
-  {Data: "1", Descricao: 'Pagamento Débito', Valor: 1.0079},
-  {Data: "2", Descricao: 'Pagamento Crédito', Valor: 4.0026},
-  {Data: "3", Descricao: 'Transferência', Valor: 6.941},
-  {Data: "4", Descricao: 'Pagamento Crédito', Valor: 9.012},
-  {Data: "5", Descricao: 'Pagamento Débito', Valor: 10.811},
-  {Data: "6", Descricao: 'Transferência', Valor: 12.0107},
-  {Data: "7", Descricao: 'Pagamento Débito', Valor: 14.0067},
-  {Data: "8", Descricao: 'Pagamento Fatura (Cartão de Crédito)', Valor: 15.9994},
-  {Data: "9", Descricao: 'Transferência', Valor: 18.9984},
-  {Data: "10", Descricao: 'Pagamento Débito', Valor: 20.1797},
-];
 
 @Component({
   selector: 'app-dashboard',
-  imports: [MatTableModule, MatCardModule],
+  imports: [MatTableModule, MatCardModule, FormsModule, TransactionTypePipeTsPipe, BrlFormatPipe, DatePipe],
+  providers: [HttpClient],
   standalone: true,
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss'
 })
-export class DashboardComponent {
-  username = 'CaixaVerso';
-  balanceValue: number = 1250.00;
-  balance: string = `R$ ${this.balanceValue.toFixed(2)}`; 
+export class DashboardComponent implements OnInit {
+  username: string = '';
+  balanceValue: number = 0;
+  income: number = 0;
+  expense: number = 0;
   displayedColumns: string[] = ['Data', 'Descricao', 'Valor'];
-  dataSource = ELEMENT_DATA;
+  dataSource: Movement[] = [];
+  receita: Movement[] = [];
+  despesa: Movement[] = [];
+  
+  ngOnInit() {
+    this.getAccount();
+    this.popularTabela();
+  }
+
+  constructor(private readonly bankService: BankService) {
+
+  }
+
+  getAccount(){
+    this.bankService.getConta().subscribe((response: any) => {
+      this.username = response.username;
+      this.balanceValue = response.balance;
+    });
+  }
+  popularTabela(){
+    this.bankService.getMovements().subscribe((response: Movement[]) => {
+      this.dataSource = response.filter(movement => {
+        const movementDate = new Date(movement.date);
+        const thirtyDaysAgo = new Date();
+        thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+        return movementDate >= thirtyDaysAgo;
+      });
+
+      this.receita = this.dataSource.filter(movement => movement.type === 'deposit');
+      this.despesa = this.dataSource.filter(movement => movement.type === 'withdrawal' || movement.type === 'transfer' || movement.type === 'debit' || movement.type === 'credit');
+      
+      this.calcularDespesas();
+      this.calcularReceitas();
+    });
+  }
+
+  calcularDespesas() {
+    this.expense = this.despesa
+      .reduce((total, movement) => total + movement.amount, 0);
+  }
+
+  calcularReceitas() {
+    this.income = this.receita
+      .reduce((total, movement) => total + movement.amount, 0);
+  }
+
+
+  formatBRL(value: number): string {
+    return value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+  }
+
+
 }

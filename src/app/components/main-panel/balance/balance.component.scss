@@ -1,0 +1,14 @@
+.tabela {
+    width: 100%;
+    margin-top: 2rem;
+    .valor {
+        font-size: 1.2rem;
+        font-weight: 500;
+    }
+    .valor-negativo{
+        color: #c62828; /* Vermelho para despesas */
+    }
+    .valor-positivo{
+        color: #2e7d32; /* Verde para receitas */
+    }
+}

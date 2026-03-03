@@ -23,7 +23,7 @@ export class SideBarComponent {
     },
     {
       label: 'Extrato',
-      page: Pages.BALANCE,
+      page: Pages.EXTRACT,
       selected: false
     },
     {
