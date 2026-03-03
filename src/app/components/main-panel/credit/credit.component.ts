@@ -4,7 +4,7 @@ import { ProjectionType, Simulation, SimulationCreate } from '../../../shared/mo
 import { MatTableModule } from '@angular/material/table';
 import { CurrencyPipe, DatePipe, DecimalPipe, formatDate, NgIf } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
-import {FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
+import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
 import {MatInputModule} from '@angular/material/input';
 import {MatSelectModule} from '@angular/material/select';
 import {MatFormFieldModule} from '@angular/material/form-field';
@@ -107,7 +107,7 @@ export class CreditComponent implements OnInit{
         value = value.replace(/[^0-9.,]/g, '');
         const parts = value.split(/[.,]/);
         if (parts.length > 1) {
-          parts[1] = parts[1].substring(0, 2); // limita a 2 casas
+          parts[1] = parts[1].substring(0, 2);
           value = parts[0] + ',' + parts[1];
         }
       
@@ -118,7 +118,7 @@ export class CreditComponent implements OnInit{
   generateSimulation() {
     if (this.form.invalid) return;
 
-    const type = this.form.value.type; // PRICE ou SAC
+    const type = this.form.value.type;
     const amount = Number(this.form.value.amount);
     const time = Number(this.form.value.time);
 
@@ -135,6 +135,7 @@ export class CreditComponent implements OnInit{
       }
 
       const simulation: SimulationCreate = {
+        createdAt: this.form.value.date,
         projectionType: type,
         requestedAmount: amount,
         requestedMonths: time,
@@ -181,6 +182,7 @@ export class CreditComponent implements OnInit{
   time: number,
   parcelValue: number): SimulationCreate {
    return {
+      createdAt: this.form.value.date,
       projectionType: type,
       requestedAmount: amount,
       requestedMonths: time,
@@ -210,12 +212,12 @@ export class CreditComponent implements OnInit{
   excluirRegistro(element: Simulation) {
      if (!element?.id) return;
 
-  this.creditProcessor.deleteSimulation(element.id).subscribe({
-    next: () => {
-      this.dataSource = this.dataSource.filter(s => s.id !== element.id);
-      console.log('Simulação excluída com sucesso');
-    },
-    error: (err) => console.error('Erro ao excluir simulação:', err)
-  });
+    this.creditProcessor.deleteSimulation(element.id).subscribe({
+      next: () => {
+        this.dataSource = this.dataSource.filter(s => s.id !== element.id);
+        console.log('Simulação excluída com sucesso');
+      },
+      error: (err) => console.error('Erro ao excluir simulação:', err)
+    });
   }
 }

@@ -2,15 +2,17 @@ export interface Movement {
   type: string;
   amount: number;
   date: string;
+  description: string;
 }
 
 export interface Account {
   username: string;
   balance: number;
-  accountNumber: string;
-  agency: string;
+  accountNumber: number;
+  agency: number;
   activeDebt: number;
   employmentType: string;
+  hasDelinquency: boolean;
 }
 
 export interface MovementResponse {
@@ -28,6 +30,7 @@ export interface CreditSimulationModel {
 
 export type ProjectionType = 'PRICE' | 'SAC';
 export interface SimulationCreate {
+  createdAt: string;
   projectionType: ProjectionType;
   requestedAmount: number;
   requestedMonths: number;
@@ -44,6 +47,11 @@ export interface SimulationCreate {
 
 export interface Simulation extends SimulationCreate {
   id: number;
-  createdAt: string; // ou Date
   status?: 'PENDING' | 'ACCEPTED' | 'CANCELED';
+}
+
+export interface TransferDialogResult {
+  amount: number;
+  agency: string;
+  account: string;
 }
