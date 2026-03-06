@@ -2,7 +2,7 @@ import { Component, Inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatDividerModule } from '@angular/material/divider';
-import { CreditSimulationModel } from '../../../../shared/models/movement-model/movement-model.model';
+import { CreditSimulationModel } from '../../../../models/movement-model.model';
 import { CommonModule, CurrencyPipe, DatePipe, DecimalPipe, NgIf } from '@angular/common';
 
 export type SimulationDialogResult = 'accept' | 'continue';

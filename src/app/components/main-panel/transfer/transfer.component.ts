@@ -4,7 +4,7 @@ import { MatCard, MatCardContent, MatCardHeader, MatCardTitleGroup, MatCardTitle
 import { MatDialog } from '@angular/material/dialog';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
-import { TransferDialogResult } from '../../../shared/models/movement-model/movement-model.model';
+import { TransferDialogResult } from '../../../models/movement-model.model';
 import { TransactionDialogComponent } from './transaction-dialog/transaction-dialog.component';
 import { NgIf } from "../../../../../node_modules/@angular/common/common_module.d-NEF7UaHr";
 import { BankService } from '../../../services/bank/bank.service';

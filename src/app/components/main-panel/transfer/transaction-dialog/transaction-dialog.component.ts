@@ -2,7 +2,7 @@ import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
 import { MatError, MatInputModule, MatLabel } from "@angular/material/input";
-import { TransferDialogResult } from '../../../../shared/models/movement-model/movement-model.model';
+import { TransferDialogResult } from '../../../../models/movement-model.model';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
 import { NgIf } from '@angular/common';

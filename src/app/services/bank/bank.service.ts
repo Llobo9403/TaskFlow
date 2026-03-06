@@ -1,14 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
-import { Account, CreditSimulationModel, Movement, Simulation } from '../../shared/models/movement-model/movement-model.model';
+import { Account, Movement, Simulation } from '../../models/movement-model.model';
 
 @Injectable({
   providedIn: 'root'
 })
 
 export class BankService {
-
   apiUrl = 'http://localhost:3000';
 
   constructor(readonly http: HttpClient) { }
@@ -20,6 +19,10 @@ export class BankService {
   getMovements(): Observable<Movement[]>{
     return this.http
     .get<Movement[]>(`${this.apiUrl}/movement`)
+  }
+
+  editDescription(id: string, description: string): Observable<Movement> {
+    return this.http.patch<Movement>(`${this.apiUrl}/movement/${id}`, { description });
   }
 
   getSimulations(): Observable<Simulation[]>{

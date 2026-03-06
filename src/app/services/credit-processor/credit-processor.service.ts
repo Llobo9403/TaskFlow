@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { forkJoin, map, max, Observable, tap } from 'rxjs';
-import { Simulation, SimulationCreate } from '../../shared/models/movement-model/movement-model.model';
+import { Simulation, SimulationCreate } from '../../models/movement-model.model';
 
 export interface Limits {
   averageIncome: number;

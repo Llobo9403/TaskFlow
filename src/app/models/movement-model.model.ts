@@ -1,5 +1,6 @@
 export type TransactionType = 'transfer' | 'deposit'
 export interface Movement {
+  id: string
   type: string;
   amount: number;
   date: string;

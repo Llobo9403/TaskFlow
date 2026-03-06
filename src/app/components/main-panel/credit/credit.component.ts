@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { BankService } from '../../../services/bank/bank.service';
-import { ProjectionType, Simulation, SimulationCreate } from '../../../shared/models/movement-model/movement-model.model';
+import { ProjectionType, Simulation, SimulationCreate } from '../../../models/movement-model.model';
 import { MatTableModule } from '@angular/material/table';
 import { CurrencyPipe, DatePipe, DecimalPipe, formatDate, NgIf } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';

@@ -6,8 +6,10 @@ import { HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { TransactionTypePipeTsPipe } from "../../../shared/pipes/transaction-type/transaction-type.pipe.ts.pipe";
 import { BrlFormatPipe } from '../../../shared/pipes/brl/brl-format.pipe';
-import { Movement } from '../../../shared/models/movement-model/movement-model.model';
+import { Movement } from '../../../models/movement-model.model';
 import { CurrencyPipe, DatePipe } from '@angular/common';
+import { MatIcon } from "@angular/material/icon";
+import { MatMenu } from "@angular/material/menu";
 
 
 const map: Record<string, string> = {
@@ -17,7 +19,7 @@ const map: Record<string, string> = {
 
 @Component({
   selector: 'app-dashboard',
-  imports: [MatTableModule, MatCardModule, FormsModule, TransactionTypePipeTsPipe, BrlFormatPipe, DatePipe],
+  imports: [MatTableModule, MatCardModule, FormsModule, TransactionTypePipeTsPipe, BrlFormatPipe, DatePipe, MatIcon, MatMenu],
   providers: [HttpClient],
   standalone: true,
   templateUrl: './dashboard.component.html',
