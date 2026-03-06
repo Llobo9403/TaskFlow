@@ -1,4 +1,4 @@
-<h2 mat-dialog-title>Enviar TED</h2>
+<h2 mat-dialog-title>{{data?.type === 'deposit' ? 'Depósito' : 'Transferência'}}</h2>
 
 <form [formGroup]="form" (ngSubmit)="confirm()" mat-dialog-content>
   <mat-form-field appearance="outline" style="width: 100%;">
@@ -15,21 +15,25 @@
     <mat-error *ngIf="form.controls['amount'].hasError('pattern')">Formato inválido</mat-error>
     <mat-error *ngIf="form.controls['amount'].hasError('max')">Saldo insuficiente</mat-error>
   </mat-form-field>
-  <mat-form-field appearance="outline" style="width: 100%;">
-    <mat-label>Agência de destino</mat-label>
-    <input matInput formControlName="agency" placeholder="Ex: 1234"/>
-    <mat-error *ngIf="form.controls['agency'].hasError('required')">Informe a agência</mat-error>
-    <mat-error *ngIf="form.controls['agency'].hasError('pattern')">Use apenas números</mat-error>
-  </mat-form-field>
-  <mat-form-field appearance="outline" style="width: 100%;">
-    <mat-label>Conta de destino</mat-label>
-    <input
-        matInput
-        formControlName="account"
-        placeholder="Ex: 1234567890" />
-    <mat-error *ngIf="form.controls['account'].hasError('required')">Informe a conta</mat-error>
-    <mat-error *ngIf="form.controls['account'].hasError('pattern')">Formato inválido</mat-error>
-  </mat-form-field>
+ 
+  <div *ngIf="data.type === 'transfer'">
+     <mat-form-field appearance="outline" style="width: 100%;">
+      <mat-label>Agência de destino</mat-label>
+      <input matInput formControlName="agency" (input)="limitDigits($event, 4)" placeholder="Ex: 1234"/>
+      <mat-error *ngIf="form.controls['agency'].hasError('required')">Informe a agência</mat-error>
+      <mat-error *ngIf="form.controls['agency'].hasError('pattern')">Use apenas números</mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="outline" style="width: 100%;">
+      <mat-label>Conta de destino</mat-label>
+      <input
+          matInput
+          formControlName="account"
+          (input)="limitDigits($event, 10)"
+          placeholder="Ex: 1234567890" />
+      <mat-error *ngIf="form.controls['account'].hasError('required')">Informe a conta</mat-error>
+      <mat-error *ngIf="form.controls['account'].hasError('pattern')">Formato inválido</mat-error>
+    </mat-form-field>
+  </div>
   <div mat-dialog-actions align="end">
     <button mat-button type="button" (click)="close()">Cancelar</button>
     <button mat-flat-button color="primary" type="submit" [disabled]="form.invalid">

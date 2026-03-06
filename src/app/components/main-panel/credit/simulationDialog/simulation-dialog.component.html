@@ -1,7 +1,6 @@
 <h2 mat-dialog-title>Simulação gerada</h2>
 
 <div mat-dialog-content>
-  <p><strong>ID:</strong> {{ data.id }}</p>
   <p><strong>Data:</strong> {{ data.createdAt | date:'dd/MM/yyyy' }}</p>
 
   <mat-divider class="my-2"></mat-divider>
@@ -37,5 +36,4 @@
 
 <div mat-dialog-actions align="end">
   <button mat-button (click)="continue()">Continuar</button>
-  <button mat-flat-button color="primary" (click)="accept()">Aceitar a proposta</button>
 </div>

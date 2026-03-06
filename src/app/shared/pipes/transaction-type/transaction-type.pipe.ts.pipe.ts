@@ -10,10 +10,7 @@ export class TransactionTypePipeTsPipe implements PipeTransform {
 
     const map: Record<string, string> = {
       'deposit': 'Depósito',
-      'withdrawal': 'Saque',
       'transfer': 'Transferência',
-      'credit': 'Crédito',
-      'debit': 'Débito'
     }
 
     return map[value] || value;

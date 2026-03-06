@@ -51,10 +51,6 @@ export class SimulationDialogComponent {
     @Inject(MAT_DIALOG_DATA) public data: SimulationDialogData
   ) {}
 
-  accept(): void {
-    this.dialogRef.close('accept');
-  }
-
   continue(): void {
     this.dialogRef.close('continue');
   }

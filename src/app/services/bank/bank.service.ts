@@ -30,6 +30,7 @@ export class BankService {
     this.http.post(`${this.apiUrl}/movement`, {
       type: 'deposit',
       amount: amount,
+      decription: '', 
       date: new Date().toISOString()
     }).subscribe();
     this.http.patch(`${this.apiUrl}/account`, {
@@ -39,8 +40,9 @@ export class BankService {
 
   sendMoney(amount: number, total: number) {
     this.http.post(`${this.apiUrl}/movement`, {
-      type: 'withdrawal',
+      type: 'transfer',
       amount: amount,
+      description: '',
       date: new Date().toISOString()
     }).subscribe();
     this.http.patch(`${this.apiUrl}/account`, {

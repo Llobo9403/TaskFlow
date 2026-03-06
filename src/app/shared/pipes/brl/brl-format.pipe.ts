@@ -11,7 +11,7 @@ export class BrlFormatPipe implements PipeTransform {
       currency: 'BRL'
     });
 
-    if (type === 'withdraw' || type === 'debit' || type === 'transfer' || type === 'credit') {
+    if ( type === 'transfer') {
       return {
         value: `- ${formatted}`,
         class: 'valor-negativo'

@@ -12,10 +12,7 @@ import { CurrencyPipe, DatePipe } from '@angular/common';
 
 const map: Record<string, string> = {
   'deposit': 'Depósito',
-  'withdrawal': 'Saque',
   'transfer': 'Transferência',
-  'credit': 'Crédito',
-  'debit': 'Débito'
 }
 
 @Component({
@@ -31,7 +28,7 @@ export class DashboardComponent implements OnInit {
   balanceValue: number = 0;
   income: number = 0;
   expense: number = 0;
-  displayedColumns: string[] = ['Data', 'Descricao', 'Valor'];
+  displayedColumns: string[] = ['Data', 'Tipo' ,'Descricao', 'Valor'];
   dataSource: Movement[] = [];
   receita: Movement[] = [];
   despesa: Movement[] = [];
@@ -61,7 +58,7 @@ export class DashboardComponent implements OnInit {
       });
 
       this.receita = this.dataSource.filter(movement => movement.type === 'deposit');
-      this.despesa = this.dataSource.filter(movement => movement.type === 'withdrawal' || movement.type === 'transfer' || movement.type === 'debit' || movement.type === 'credit');
+      this.despesa = this.dataSource.filter(movement => movement.type === 'transfer');
       
       this.calcularDespesas();
       this.calcularReceitas();

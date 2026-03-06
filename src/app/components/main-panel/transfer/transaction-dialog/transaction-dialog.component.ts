@@ -19,7 +19,7 @@ export class TransactionDialogComponent implements OnInit{
   form: FormGroup
   fb = inject(FormBuilder);
   dialogRef = inject(MatDialogRef<TransactionDialogComponent, TransferDialogResult | null>);
-  data = inject(MAT_DIALOG_DATA, { optional: true }) as Partial<TransferDialogResult> | null;
+  data = inject(MAT_DIALOG_DATA, { optional: true }) as TransferDialogResult;
   maxAmount: number = 0;
   
   constructor(private bankService: BankService) {
@@ -27,24 +27,41 @@ export class TransactionDialogComponent implements OnInit{
       amount:  ['', [Validators.required, Validators.min(0.01), Validators.pattern(/^\d+([.,]\d{1,2})?$/)]],
       agency: [
         this.data?.agency ?? '',
-        [Validators.required,  Validators.minLength(4), Validators.maxLength(4), Validators.pattern(/^\d+(-\d+)?$/)],
       ],
       account: [
         this.data?.account ?? '',
-        [Validators.required, Validators.minLength(10), Validators.maxLength(10), Validators.pattern(/^\d+(-\d+)?$/)],
       ],
     });
   }
 
   ngOnInit(): void {
+     if (this.data?.type === 'transfer') {
+      const agencyControl = this.form.get('agency');
+      const accountControl = this.form.get('account');
+      agencyControl?.setValidators([
+        Validators.required,
+        Validators.minLength(4),
+        Validators.maxLength(4),
+        Validators.pattern(/^\d{4}$/)
+      ]);
+      accountControl?.setValidators([
+        Validators.required,
+        Validators.minLength(10),
+        Validators.maxLength(10),
+        Validators.pattern(/^\d{10}$/)
+      ]);
+      agencyControl?.updateValueAndValidity();
+      accountControl?.updateValueAndValidity();
+    }
       this.getAccountDetails()
   }
 
   getAccountDetails() {
+    
+  if(this.data.type === 'transfer'){
     return this.bankService.getConta().subscribe(conta => {
       const saldo = conta?.balance ?? 0;
       this.maxAmount = saldo;
-
       const amountControl = this.form.get('amount');
       amountControl?.setValidators([
         Validators.required,
@@ -53,7 +70,9 @@ export class TransactionDialogComponent implements OnInit{
         Validators.pattern(/^\d+([.,]\d{1,2})?$/)
       ]);
       amountControl?.updateValueAndValidity();
-    });
+     });
+    }
+    else return
   }
 
   close() {
@@ -122,17 +141,26 @@ export class TransactionDialogComponent implements OnInit{
 
   confirm() {
     if (this.form.invalid) return;
-  
+
+    const amount = Number(this.form.value.amount);
+
     const result: TransferDialogResult = {
-      amount: Number(this.form.value.amount),
+      type: this.data.type,
+      amount,
       agency: String(this.form.value.agency),
-      account: String(this.form.value.account),
+      account: String(this.form.value.account)
     };
 
-    this.maxAmount = this.maxAmount - result.amount;
+    if (this.data.type === 'transfer') {
+      this.maxAmount -= amount;
+      this.bankService.sendMoney(amount, this.maxAmount);
+    }
 
-    this.bankService.sendMoney(result.amount, this.maxAmount);
-    this.form.reset();
+    if (this.data.type === 'deposit') {
+      this.maxAmount += amount;
+      this.bankService.receiveMoney(amount, this.maxAmount);
+    }
+
     this.dialogRef.close(result);
   }
 }

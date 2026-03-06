@@ -1,7 +1,7 @@
 {
   "account": {
     "username": "CaixaVerso",
-    "balance": 1250.5,
+    "balance": 123318,
     "accountNumber": 1234567890,
     "agency": 1234,
     "activeDebt": 0,
@@ -28,7 +28,7 @@
       "amount": 2000,
       "date": "2025-01-10",
       "description": "Transferencia Pix",
-      "id": "baa1"
+      "id": "bac1"
     },
     {
       "type": "transfer",
@@ -53,9 +53,52 @@
     },
     {
       "id": "d792",
-      "type": "withdrawal",
+      "type": "transfer",
       "amount": 100,
+      "description": "teste",
       "date": "2026-03-03T05:08:07.441Z"
+    },
+    {
+      "type": "deposit",
+      "amount": 500,
+      "date": "2026-02-15",
+      "description": "Presente de aniversário",
+      "id": "8506"
+    },
+    {
+      "id": "29f8",
+      "type": "transfer",
+      "amount": 300,
+      "description": "teste",
+      "date": "2026-03-06T02:41:14.147Z"
+    },
+    {
+      "id": "47de",
+      "type": "transfer",
+      "amount": 100,
+      "description": "teste",
+      "date": "2026-03-06T02:56:32.823Z"
+    },
+    {
+      "id": "eb83",
+      "type": "transfer",
+      "amount": 100,
+      "description": "teste",
+      "date": "2026-03-06T03:35:01.630Z"
+    },
+    {
+      "id": "d15f",
+      "type": "transfer",
+      "amount": 250,
+      "description": "teste",
+      "date": "2026-03-06T05:15:02.693Z"
+    },
+    {
+      "id": "df2c",
+      "type": "deposit",
+      "amount": 123,
+      "description": "teste",
+      "date": "2026-03-06T05:19:52.789Z"
     }
   ],
   "simulations": [
@@ -122,19 +165,19 @@
       "totalInterest": 3367.878986885429
     },
     {
-      "id": "40a5",
-      "createdAt": "2026-03-03",
+      "id": "ef60",
+      "createdAt": "2026-03-06",
       "projectionType": "SAC",
-      "requestedAmount": 2300,
-      "requestedMonths": 36,
-      "averageIncome": 3500,
+      "requestedAmount": 12345,
+      "requestedMonths": 12,
+      "averageIncome": 3666.6666666666665,
       "maxAllowedMonths": 36,
-      "maxParcelValue": 700,
-      "maxAllowedAmount": 25200,
+      "maxParcelValue": 733.33,
+      "maxAllowedAmount": 26399.88,
       "monthlyRate": 0.02,
-      "installmentFirst": 109.88888888888889,
-      "totalPaid": 3956,
-      "totalInterest": 1656
+      "installmentFirst": 1275.65,
+      "totalPaid": 15307.800000000001,
+      "totalInterest": 2962.800000000001
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"
