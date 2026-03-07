@@ -1,7 +1,11 @@
 <aside class="side-bar">
-    @for (item of menuItems; track $index) {
-        <button class="menu-item" [class.selected]="(page$ | async) === item.page" (click)="redirect(item.page)">
-            {{ item.label }}
-        </button>
-    }
+  @for (item of menuItems; track $index) {
+    <button
+      class="menu-item"
+      [class.selected]="(page$ | async) === item.page"
+      (click)="redirect(item.page)"
+    >
+      {{ item.label }}
+    </button>
+  }
 </aside>

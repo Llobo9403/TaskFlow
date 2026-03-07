@@ -1,5 +1,10 @@
 <app-header></app-header>
-<div class="home-container">
-    <app-side-bar></app-side-bar>
+    <div class="home-container">
+        <div class="layout">
+      <app-side-bar></app-side-bar>
+      <main class="content">
+        ...
+      </main>
+    </div>
     <app-main-panel [currentPage]="currentPage"></app-main-panel>
 </div>

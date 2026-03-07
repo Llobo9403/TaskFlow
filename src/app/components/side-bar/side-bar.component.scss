@@ -17,13 +17,76 @@ button {
 .side-bar {
     display: flex;
     flex-direction: column;
+    align-items: stretch;
+    width: 240px;
+    min-width: 240px;
     height: 100%;
     background-color: #19ba02;
-    align-items: left;
-    padding-top: 0px;
+    box-sizing: border-box;
+    padding: 0;
 
     .selected {
         background-color: #20d906;
     }
 
+}
+
+.menu-item {
+     width: 100%;
+     min-height: 60px;
+     background-color: transparent;
+     border: none;
+     cursor: pointer;
+     margin: 0;
+     padding: 0.75rem 1.5rem;
+     color: #ffffff;
+     font-size: 18px;
+     text-align: left;
+     font-weight: 600;
+     transition: background-color 0.25s ease;
+}
+
+.menu-item:hover,
+.menu-item.selected {
+    background-color: #20d906;
+}
+
+@media (max-width: 1024px) {
+  .side-bar {
+    width: 200px;
+    min-width: 200px;
+  }
+
+  .menu-item {
+    font-size: 16px;
+    padding: 0.75rem 1rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .side-bar {
+    width: 100%;
+    min-width: 100%;
+    height: auto;
+    flex-direction: row;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+
+  .menu-item {
+    min-width: 140px;
+    width: auto;
+    min-height: 52px;
+    text-align: center;
+    padding: 0.75rem 1rem;
+    flex-shrink: 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .menu-item {
+    min-width: 120px;
+    font-size: 14px;
+    padding: 0.65rem 0.75rem;
+  }
 }
