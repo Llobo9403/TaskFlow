@@ -4,7 +4,7 @@ import { MatCard, MatCardContent, MatCardHeader, MatCardTitleGroup, MatCardTitle
 import { MatDialog } from '@angular/material/dialog';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
-import { TransferDialogResult } from '../../../shared/models/movement-model/movement-model.model';
+import { TransferDialogResult } from '../../../models/movement-model.model';
 import { TransactionDialogComponent } from './transaction-dialog/transaction-dialog.component';
 import { NgIf } from "../../../../../node_modules/@angular/common/common_module.d-NEF7UaHr";
 import { BankService } from '../../../services/bank/bank.service';
@@ -19,7 +19,6 @@ import { BankService } from '../../../services/bank/bank.service';
 export class TransferComponent implements OnInit {
   income: number = 0;
   balanceValue: number = 0;
-  transferType: 'deposit' | 'withdraw' | 'pix' = 'withdraw';
 
   constructor(private dialog: MatDialog, private bankService: BankService) { }
 
@@ -32,22 +31,33 @@ export class TransferComponent implements OnInit {
       width: '520px',
       disableClose: true,
       data: {
-        amount: null,
-        agency: '',
-        account: '',
-      },
+        type: 'transfer',
+        title: 'Enviar TED'
+      }
     });
 
-    ref.afterClosed().subscribe((result: TransferDialogResult | null) => {
+    ref.afterClosed().subscribe(result => {
       if (!result) return;
-      if (result.amount > this.balanceValue) {
-        alert('Saldo insuficiente!');
-        return;
-      }
+
+      this.getAccountDetails();
     });
   }
 
-  gerarBoleto() {
+  trazerDinheiro() {
+    const ref = this.dialog.open(TransactionDialogComponent, {
+      width: '520px',
+      disableClose: true,
+      data: {
+        type: 'deposit',
+        title: 'Trazer Dinheiro'
+      }
+    });
+  
+    ref.afterClosed().subscribe(result => {
+      if (!result) return;
+    
+      this.getAccountDetails();
+    });
   }
 
   formatBRL(value: number): string {

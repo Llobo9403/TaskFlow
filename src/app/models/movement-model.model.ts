@@ -1,4 +1,6 @@
+export type TransactionType = 'transfer' | 'deposit'
 export interface Movement {
+  id: string
   type: string;
   amount: number;
   date: string;
@@ -51,6 +53,7 @@ export interface Simulation extends SimulationCreate {
 }
 
 export interface TransferDialogResult {
+  type: TransactionType
   amount: number;
   agency: string;
   account: string;

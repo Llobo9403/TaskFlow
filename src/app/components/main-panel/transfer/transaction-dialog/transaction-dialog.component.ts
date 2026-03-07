@@ -2,7 +2,7 @@ import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
 import { MatError, MatInputModule, MatLabel } from "@angular/material/input";
-import { TransferDialogResult } from '../../../../shared/models/movement-model/movement-model.model';
+import { TransferDialogResult } from '../../../../models/movement-model.model';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
 import { NgIf } from '@angular/common';
@@ -19,40 +19,61 @@ export class TransactionDialogComponent implements OnInit{
   form: FormGroup
   fb = inject(FormBuilder);
   dialogRef = inject(MatDialogRef<TransactionDialogComponent, TransferDialogResult | null>);
-  data = inject(MAT_DIALOG_DATA, { optional: true }) as Partial<TransferDialogResult> | null;
+  data = inject(MAT_DIALOG_DATA, { optional: true }) as TransferDialogResult;
   maxAmount: number = 0;
+  currentBalance = 0;
   
   constructor(private bankService: BankService) {
     this.form = this.fb.group({
-      amount:  ['', [Validators.required, Validators.min(0.01), Validators.pattern(/^\d+([.,]\d{1,2})?$/)]],
-      agency: [
-        this.data?.agency ?? '',
-        [Validators.required,  Validators.minLength(4), Validators.maxLength(4), Validators.pattern(/^\d+(-\d+)?$/)],
-      ],
-      account: [
-        this.data?.account ?? '',
-        [Validators.required, Validators.minLength(10), Validators.maxLength(10), Validators.pattern(/^\d+(-\d+)?$/)],
-      ],
-    });
+      amount: ['', [Validators.required, Validators.min(0.01)]],
+      agency: [''],
+      account: ['']
+    })
   }
 
   ngOnInit(): void {
-      this.getAccountDetails()
+      if (this.data.type === 'transfer') {
+      const agencyControl = this.form.get('agency');
+      const accountControl = this.form.get('account');
+
+      agencyControl?.setValidators([
+        Validators.required,
+        Validators.minLength(4),
+        Validators.maxLength(4),
+        Validators.pattern(/^\d{4}$/)
+      ]);
+
+      accountControl?.setValidators([
+        Validators.required,
+        Validators.minLength(10),
+        Validators.maxLength(10),
+        Validators.pattern(/^\d{10}$/)
+      ]);
+
+      agencyControl?.updateValueAndValidity();
+      accountControl?.updateValueAndValidity();
+    }
+
+    this.getAccountDetails();
   }
 
   getAccountDetails() {
-    return this.bankService.getConta().subscribe(conta => {
+   this.bankService.getConta().subscribe(conta => {
       const saldo = conta?.balance ?? 0;
+
+      this.currentBalance = saldo;
       this.maxAmount = saldo;
 
-      const amountControl = this.form.get('amount');
-      amountControl?.setValidators([
-        Validators.required,
-        Validators.min(0.01),
-        Validators.max(this.maxAmount),
-        Validators.pattern(/^\d+([.,]\d{1,2})?$/)
-      ]);
-      amountControl?.updateValueAndValidity();
+      if (this.data.type === 'transfer') {
+        this.form.get('amount')?.setValidators([
+          Validators.required,
+          Validators.min(0.01),
+          Validators.max(this.currentBalance),
+          Validators.pattern(/^\d+([.,]\d{1,2})?$/)
+        ]);
+
+        this.form.get('amount')?.updateValueAndValidity();
+      }
     });
   }
 
@@ -120,19 +141,18 @@ export class TransactionDialogComponent implements OnInit{
     return n.toFixed(2).replace('.', ',');
   }
 
-  confirm() {
+ confirm() {
     if (this.form.invalid) return;
-  
-    const result: TransferDialogResult = {
-      amount: Number(this.form.value.amount),
-      agency: String(this.form.value.agency),
-      account: String(this.form.value.account),
-    };
-
-    this.maxAmount = this.maxAmount - result.amount;
-
-    this.bankService.sendMoney(result.amount, this.maxAmount);
-    this.form.reset();
-    this.dialogRef.close(result);
+    const amount = this.parseBRL(this.form.value.amount);
+    if (Number.isNaN(amount) || amount <= 0) return;
+    if (this.data.type === 'transfer') {
+      const newBalance = this.currentBalance - amount;
+      this.bankService.sendMoney(amount, newBalance);
+    }
+    if (this.data.type === 'deposit') {
+      const newBalance = this.currentBalance + amount;
+      this.bankService.receiveMoney(amount, newBalance);
+    }
+    this.dialogRef.close(true);
   }
 }

@@ -7,17 +7,37 @@
     <td mat-cell *matCellDef="let element"> {{element.date | date: 'dd/MM/yyyy'}} </td>
   </ng-container>
 
-  <!-- Name Column -->
-  <ng-container matColumnDef="Descricao">
-    <th mat-header-cell *matHeaderCellDef class="valor"> Descrição </th>
+  <ng-container matColumnDef="Tipo">
+    <th mat-header-cell *matHeaderCellDef class="valor"> Tipo </th>
     <td mat-cell *matCellDef="let element"> {{element.type | transactionTypePipeTs}} </td>
   </ng-container>
 
-  <!-- Weight Column -->
+  <ng-container matColumnDef="Descricao">
+    <th mat-header-cell *matHeaderCellDef class="valor"> Descrição </th>
+    <td mat-cell *matCellDef="let element"> {{element.description}} </td>
+  </ng-container>
+
   <ng-container matColumnDef="Valor">
     <th mat-header-cell *matHeaderCellDef class="valor"> Valor </th>
-    <td mat-cell *matCellDef="let element"  [class]="(element.amount | brlFormat: element.type).class">{{(element.amount | brlFormat: element.type).value}}</td>
+    <td class="valor" mat-cell *matCellDef="let element" [class]="(element.amount | brlFormat: element.type).class">
+      {{(element.amount | brlFormat: element.type).value}}
+    </td>
   </ng-container>
+
+  <ng-container matColumnDef="Acoes">
+      <th mat-header-cell *matHeaderCellDef class="valor"> Ações </th>
+      <td mat-cell *matCellDef="let element">
+          <button class="btn-acoes" mat-icon-button [matMenuTriggerFor]="menu" [matMenuTriggerData]="{element: element}">
+          <mat-icon>more_vert</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+
+  <mat-menu #menu="matMenu">
+      <ng-template matMenuContent let-data="element">
+        <button mat-menu-item (click)="editarDescricao(data)">Editar Descrição</button>
+      </ng-template>
+    </mat-menu>
 
   <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
   <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>

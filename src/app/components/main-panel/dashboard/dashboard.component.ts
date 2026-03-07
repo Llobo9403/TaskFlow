@@ -6,21 +6,20 @@ import { HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { TransactionTypePipeTsPipe } from "../../../shared/pipes/transaction-type/transaction-type.pipe.ts.pipe";
 import { BrlFormatPipe } from '../../../shared/pipes/brl/brl-format.pipe';
-import { Movement } from '../../../shared/models/movement-model/movement-model.model';
+import { Movement } from '../../../models/movement-model.model';
 import { CurrencyPipe, DatePipe } from '@angular/common';
+import { MatIcon } from "@angular/material/icon";
+import { MatMenu } from "@angular/material/menu";
 
 
 const map: Record<string, string> = {
   'deposit': 'Depósito',
-  'withdrawal': 'Saque',
   'transfer': 'Transferência',
-  'credit': 'Crédito',
-  'debit': 'Débito'
 }
 
 @Component({
   selector: 'app-dashboard',
-  imports: [MatTableModule, MatCardModule, FormsModule, TransactionTypePipeTsPipe, BrlFormatPipe, DatePipe],
+  imports: [MatTableModule, MatCardModule, FormsModule, TransactionTypePipeTsPipe, BrlFormatPipe, DatePipe, MatIcon, MatMenu],
   providers: [HttpClient],
   standalone: true,
   templateUrl: './dashboard.component.html',
@@ -31,7 +30,7 @@ export class DashboardComponent implements OnInit {
   balanceValue: number = 0;
   income: number = 0;
   expense: number = 0;
-  displayedColumns: string[] = ['Data', 'Descricao', 'Valor'];
+  displayedColumns: string[] = ['Data', 'Tipo' ,'Descricao', 'Valor'];
   dataSource: Movement[] = [];
   receita: Movement[] = [];
   despesa: Movement[] = [];
@@ -61,7 +60,7 @@ export class DashboardComponent implements OnInit {
       });
 
       this.receita = this.dataSource.filter(movement => movement.type === 'deposit');
-      this.despesa = this.dataSource.filter(movement => movement.type === 'withdrawal' || movement.type === 'transfer' || movement.type === 'debit' || movement.type === 'credit');
+      this.despesa = this.dataSource.filter(movement => movement.type === 'transfer');
       
       this.calcularDespesas();
       this.calcularReceitas();
