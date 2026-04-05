@@ -1,9 +1,10 @@
 <aside class="side-bar">
-  @for (item of menuItems; track $index) {
+  @for (item of menuItems; track item.label) {
     <button
       class="menu-item"
-      [class.selected]="(page$ | async) === item.page"
-      (click)="redirect(item.page)"
+      [routerLink]="item.route"
+      routerLinkActive="selected"
+      [routerLinkActiveOptions]="{exact: item.exact ?? false}"
     >
       {{ item.label }}
     </button>
