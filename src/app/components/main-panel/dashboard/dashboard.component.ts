@@ -19,7 +19,7 @@ const map: Record<string, string> = {
 
 @Component({
   selector: 'app-dashboard',
-  imports: [MatTableModule, MatCardModule, FormsModule, TransactionTypePipeTsPipe, BrlFormatPipe, DatePipe, MatIcon, MatMenu],
+  imports: [MatTableModule, MatCardModule, FormsModule, TransactionTypePipeTsPipe, BrlFormatPipe, DatePipe],
   providers: [HttpClient],
   standalone: true,
   templateUrl: './dashboard.component.html',
@@ -81,6 +81,5 @@ export class DashboardComponent implements OnInit {
   formatBRL(value: number): string {
     return value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
   }
-
 
 }

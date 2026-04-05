@@ -1,46 +1,34 @@
-import { Component, EventEmitter, inject, Output } from '@angular/core';
-import { MenuItem } from '../../models/menu-item.model';
-import { Pages } from '../../constants/pages.enum';
-import { RotasService } from '../../services/rotas/rotas.service';
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterLink, RouterLinkActive } from "@angular/router";
+import { MenuItem } from '../../models/menu-item.model';
 
 @Component({
   selector: 'app-side-bar',
-  imports: [CommonModule],
+  imports: [CommonModule, RouterLink, RouterLinkActive],
   standalone: true,
   templateUrl: './side-bar.component.html',
   styleUrl: './side-bar.component.scss'
 })
 export class SideBarComponent {
-  @Output() redirectToPageEmmiter = new EventEmitter<Pages>();
-  readonly rotasService = inject(RotasService);
 
   menuItems: MenuItem[] = [
     {
       label: 'Dashboard',
-      page: Pages.DASHBOARD,
-      selected: true
-    },
-    {
+      route: 'dashboard',
+      exact: false
+    },{
       label: 'Extrato',
-      page: Pages.EXTRACT,
-      selected: false
-    },
-    {
+      route: 'extract',
+      exact: false
+    },{
       label: 'Transações',
-      page: Pages.TRANSFER,
-      selected: false
-    },
-    {
+      route: 'transactions',
+      exact: false
+    },{
       label: 'Crédito',
-      page: Pages.CREDIT,
-      selected: false
+      route: 'credit',
+      exact: false
     }
-  ];
-
-  readonly page$ = this.rotasService.page$;
-
-  redirect(item: Pages): void {
-   this.rotasService.setPage(item);
-  }
+  ]
 }
