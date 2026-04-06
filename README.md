@@ -10,3 +10,5 @@ Se já rodou o projetro anteriormente, utilize:
 ``` bash
 npm run start  
 ```
+
+Utilize o usuário "admin" e a senha "1234"

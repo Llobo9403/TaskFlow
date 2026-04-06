@@ -8,6 +8,10 @@
     <button class="icon-button notification-button" (click)="viewProfile()" aria-label="Perfil">
       <span class="material-icons">person</span>
     </button>
+    <select [value]="currentLang" (change)="changeLanguage(($any($event.target)).value)">
+      <option value="pt-BR">PT-BR</option>
+      <option value="en">EN</option>
+    </select>
     <button class="icon-button" (click)="logout()" aria-label="Sair">
       <span class="material-icons">logout</span>
     </button>

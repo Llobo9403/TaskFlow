@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { AuthService } from '../../services/auth/auth.service';
-import { TranslatePipe } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-header',
@@ -9,10 +9,15 @@ import { TranslatePipe } from '@ngx-translate/core';
   styleUrl: './header.component.scss'
 })
 export class HeaderComponent {
-  
+   private translate = inject(TranslateService);
   username = 'Admin';
+  currentLang = 'pt-BR';
 
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService) {
+    const savedLang = localStorage.getItem('app-lang') || 'pt-BR';
+    this.currentLang = savedLang;
+    this.translate.use(savedLang);
+  }
 
   logout(): void {
   this.authService.logout();
@@ -20,5 +25,11 @@ export class HeaderComponent {
 
   viewProfile(): void {
     console.log('Visualizar perfil do usuário');
+  }
+
+  changeLanguage(lang: string): void {
+    this.currentLang = lang;
+    this.translate.use(lang);
+    localStorage.setItem('app-lang', lang);
   }
 }
