@@ -24,6 +24,8 @@ export class BalanceComponent implements OnInit {
   displayedColumns: string[] = ['Data', 'Tipo' ,'Descricao', 'Valor', 'Acoes'];
   dataSource: Movement[] = [];
   form: FormGroup
+  currentLang: string;
+  translate: any;
 
   constructor(
     private bankService: BankService,
