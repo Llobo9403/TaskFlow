@@ -33,3 +33,19 @@
         color: #2e7d32; /* Verde para receitas */
     }
 }
+.icon-button {
+  height: 40px;
+  width: 40px;
+  min-width: 40px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background-color: transparent;
+  border: none;
+  color: black;
+  cursor: pointer;
+  border-radius: 50%;
+  transition: background-color 0.25s ease;
+}

@@ -1,0 +1,17 @@
+{
+  "header": {
+    "welcome": "Bem vindo(a), {{name}}!"
+  },
+  "menu": {
+    "dashboard": "Dashboard",
+    "extract": "Extrato",
+    "transactions": "Transações",
+    "credit": "Crédito"
+  },
+  "auth": {
+    "login": "Login",
+    "username": "Usuário",
+    "password": "Senha",
+    "enter": "Entrar"
+  }
+}

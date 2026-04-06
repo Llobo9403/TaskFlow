@@ -5,7 +5,7 @@
 
   <div class="user-profile">
     <span class="username">Bem vindo(a), {{ username }}!</span>
-    <button class="icon-button notification-button" aria-label="Perfil">
+    <button class="icon-button notification-button" (click)="viewProfile()" aria-label="Perfil">
       <span class="material-icons">person</span>
     </button>
     <button class="icon-button" (click)="logout()" aria-label="Sair">

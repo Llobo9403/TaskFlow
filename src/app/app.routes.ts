@@ -5,6 +5,7 @@ import { BalanceComponent } from './components/main-panel/balance/balance.compon
 import { TransferComponent } from './components/main-panel/transfer/transfer.component';
 import { MainPanelComponent } from './components/main-panel/main-panel.component';
 import { authGuard } from './auth-guard.guard';
+import { NotFoundComponent } from './pages/not-found/not-found.component';
 
 export const routes: Routes = [
   {
@@ -18,14 +19,15 @@ export const routes: Routes = [
     canActivate: [authGuard],
     children: [
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
-      { path: 'dashboard', component: DashboardComponent },
-      { path: 'credit', component: CreditComponent },
+      { path: 'dashboard', loadChildren: () => import('./components/main-panel/dashboard/dashboard.routes'), data: { preload: true } },
+      { path: 'credit', loadComponent: () => import('./components/main-panel/credit/credit.component').then(m => m.CreditComponent) },
       { path: 'extract', component: BalanceComponent },
-      { path: 'transactions', component: TransferComponent }
+      { path: 'transactions', loadComponent: () => import('./components/main-panel/transfer/transfer.component').then(m => m.TransferComponent) },
+      { path: 'not-found', component: NotFoundComponent },
     ]
   },
   {
     path: '**',
-    redirectTo: ''
+    redirectTo: 'not-found'
   }
 ];

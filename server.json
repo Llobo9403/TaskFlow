@@ -1,7 +1,7 @@
 {
   "account": {
     "username": "Admin",
-    "balance": 11057,
+    "balance": 15157,
     "accountNumber": 1234567890,
     "agency": 1234,
     "activeDebt": 0,
@@ -71,6 +71,28 @@
       "amount": 300,
       "description": "teste",
       "date": "2026-03-06T02:41:14.147Z"
+    },
+    {
+      "id": "112d",
+      "type": "deposit",
+      "amount": 1200,
+      "decription": "",
+      "date": "2026-04-05T23:19:44.314Z",
+      "description": "Teste"
+    },
+    {
+      "id": "64dc",
+      "type": "transfer",
+      "amount": 100,
+      "description": "Pagamento",
+      "date": "2026-04-05T23:19:58.895Z"
+    },
+    {
+      "id": "ba4d",
+      "type": "deposit",
+      "amount": 3000,
+      "decription": "",
+      "date": "2026-04-05T23:29:42.183Z"
     }
   ],
   "simulations": [
@@ -107,60 +129,15 @@
       "totalInterest": 480
     },
     {
-      "id": "a8b9",
-      "createdAt": "2026-03-02",
-      "projectionType": "SAC",
-      "requestedAmount": 25000,
-      "requestedMonths": 12,
-      "averageIncome": 3500,
-      "maxAllowedMonths": 36,
-      "maxParcelValue": 700,
-      "maxAllowedAmount": 25200,
-      "monthlyRate": 0.02,
-      "installmentFirst": 2583.3333333333335,
-      "totalPaid": 31000,
-      "totalInterest": 6000
-    },
-    {
-      "id": "76d7",
-      "createdAt": "2026-03-02",
-      "projectionType": "PRICE",
-      "requestedAmount": 25000,
-      "requestedMonths": 12,
-      "averageIncome": 3500,
-      "maxAllowedMonths": 36,
-      "maxParcelValue": 700,
-      "maxAllowedAmount": 25200,
-      "monthlyRate": 0.02,
-      "installmentFixed": 2363.9899155737858,
-      "totalPaid": 28367.87898688543,
-      "totalInterest": 3367.878986885429
-    },
-    {
-      "id": "ef60",
-      "createdAt": "2026-03-06",
-      "projectionType": "SAC",
-      "requestedAmount": 12345,
-      "requestedMonths": 12,
-      "averageIncome": 3666.6666666666665,
-      "maxAllowedMonths": 36,
-      "maxParcelValue": 733.33,
-      "maxAllowedAmount": 26399.88,
-      "monthlyRate": 0.02,
-      "installmentFirst": 1275.65,
-      "totalPaid": 15307.800000000001,
-      "totalInterest": 2962.800000000001
-    },
-    {
-      "id": "df31",
-      "createdAt": "2026-03-06",
+      "id": "2716",
+      "createdAt": "2026-04-05",
       "projectionType": "SAC",
       "requestedAmount": 1200,
       "requestedMonths": 12,
-      "averageIncome": 3666.6666666666665,
-      "maxAllowedMonths": 36,
-      "maxParcelValue": 733.33,
-      "maxAllowedAmount": 26399.88,
+      "averageIncome": 2000,
+      "maxAllowedMonths": 24,
+      "maxParcelValue": 400,
+      "maxAllowedAmount": 9600,
       "monthlyRate": 0.02,
       "installmentFirst": 124,
       "totalPaid": 1488,

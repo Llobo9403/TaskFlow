@@ -5,10 +5,11 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { TransactionDialogComponent } from './transaction-dialog/transaction-dialog.component';
 import { BankService } from '../../../services/bank/bank.service';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-transfer',
-  imports: [MatCard, MatCardContent, MatCardHeader, MatCardTitleGroup, MatCardTitle, MatButtonModule, MatIconModule],
+  imports: [MatCard, MatCardContent, MatCardHeader, MatCardTitleGroup, MatCardTitle, MatButtonModule, MatIconModule, TranslatePipe],
   standalone: true,
   templateUrl: './transfer.component.html',
   styleUrl: './transfer.component.scss'

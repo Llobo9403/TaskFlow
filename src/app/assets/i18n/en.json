@@ -1,0 +1,17 @@
+{
+  "header": {
+    "welcome": "Welcome, {{name}}!"
+  },
+  "menu": {
+    "dashboard": "Dashboard",
+    "extract": "Statement",
+    "transactions": "Transactions",
+    "credit": "Credit"
+  },
+  "auth": {
+    "login": "Login",
+    "username": "Username",
+    "password": "Password",
+    "enter": "Sign in"
+  }
+}

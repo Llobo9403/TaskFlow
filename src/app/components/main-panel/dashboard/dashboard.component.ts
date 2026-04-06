@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatTableModule } from '@angular/material/table';
 import { BankService } from '../../../services/bank/bank.service';
@@ -7,10 +7,9 @@ import { FormsModule } from '@angular/forms';
 import { TransactionTypePipeTsPipe } from "../../../shared/pipes/transaction-type/transaction-type.pipe.ts.pipe";
 import { BrlFormatPipe } from '../../../shared/pipes/brl/brl-format.pipe';
 import { Movement } from '../../../models/movement-model.model';
-import { CurrencyPipe, DatePipe } from '@angular/common';
-import { MatIcon } from "@angular/material/icon";
-import { MatMenu } from "@angular/material/menu";
-
+import { DatePipe } from '@angular/common';
+import { Signal } from '@angular/core';
+import { TranslatePipe } from '@ngx-translate/core';
 
 const map: Record<string, string> = {
   'deposit': 'Depósito',
@@ -19,7 +18,7 @@ const map: Record<string, string> = {
 
 @Component({
   selector: 'app-dashboard',
-  imports: [MatTableModule, MatCardModule, FormsModule, TransactionTypePipeTsPipe, BrlFormatPipe, DatePipe],
+  imports: [MatTableModule, MatCardModule, FormsModule, TransactionTypePipeTsPipe, BrlFormatPipe, DatePipe, TranslatePipe],
   providers: [HttpClient],
   standalone: true,
   templateUrl: './dashboard.component.html',
@@ -30,6 +29,7 @@ export class DashboardComponent implements OnInit {
   balanceValue: number = 0;
   income: number = 0;
   expense: number = 0;
+  isValueVisible = signal(true);
   displayedColumns: string[] = ['Data', 'Tipo' ,'Descricao', 'Valor'];
   dataSource: Movement[] = [];
   receita: Movement[] = [];
@@ -82,4 +82,7 @@ export class DashboardComponent implements OnInit {
     return value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
   }
 
+  toggleValueVisibility(): void {
+    this.isValueVisible.update(value => !value);
+  }
 }

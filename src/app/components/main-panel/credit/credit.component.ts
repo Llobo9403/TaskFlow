@@ -13,10 +13,11 @@ import { AmortizationService } from '../../../services/amortization/amortization
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { SimulationDialogComponent } from './simulationDialog/simulation-dialog.component';
 import { MatMenuModule } from '@angular/material/menu';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-credit',
-  imports: [MatTableModule, DatePipe, MatIconModule, CurrencyPipe, MatInputModule, MatSelectModule, MatFormFieldModule, FormsModule, ReactiveFormsModule, NgIf, MatDialogModule, DecimalPipe, MatMenuModule],
+  imports: [MatTableModule, DatePipe, MatIconModule, CurrencyPipe, MatInputModule, MatSelectModule, MatFormFieldModule, FormsModule, ReactiveFormsModule, NgIf, MatDialogModule, DecimalPipe, MatMenuModule, TranslatePipe],
   standalone: true,
   templateUrl: './credit.component.html',
   styleUrl: './credit.component.scss'

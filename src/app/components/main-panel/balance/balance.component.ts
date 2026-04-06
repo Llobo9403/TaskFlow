@@ -11,10 +11,11 @@ import { BalanceDialogComponent } from './balance-dialog/balance-dialog.componen
 import { MatDialog } from '@angular/material/dialog';
 import { MatInputModule } from "@angular/material/input";
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-balance',
-  imports: [MatTableModule, BrlFormatPipe, TransactionTypePipeTsPipe, DatePipe, MatIcon, MatMenuModule, MatInputModule, ReactiveFormsModule],
+  imports: [MatTableModule, BrlFormatPipe, TransactionTypePipeTsPipe, DatePipe, MatIcon, MatMenuModule, MatInputModule, ReactiveFormsModule, TranslatePipe],
   standalone: true,
   templateUrl: './balance.component.html',
   styleUrl: './balance.component.scss'
@@ -32,6 +33,9 @@ export class BalanceComponent implements OnInit {
     this.form = this.fb.group({
       term: ['']
     })
+    const savedLang = localStorage.getItem('app-lang') || 'pt-BR';
+    this.currentLang = savedLang;
+    this.translate.use(savedLang);
   }
 
   ngOnInit() {
